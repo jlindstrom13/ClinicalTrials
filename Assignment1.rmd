@@ -14,6 +14,29 @@ data<-read.csv("/Users/jackielindstrom/Documents/ClinicalTrialsHW/ClinicalTrials
 head(data)
 ```
 
+```{r}
+dim(data)
+```
+
+```{r}
+qnorm(0.70)
+```
+
+# Power = 0.9
+```{r}
+power.t.test(delta=5, sd=8, sig.level=0.05, power=0.9, type="two.sample", alternative = "two.sided", strict=FALSE)
+```
+# Power = 0.8
+```{r}
+power.t.test(delta=5, sd=8, sig.level=0.05, power=0.8, type="two.sample", alternative = "two.sided", strict=FALSE)
+```
+# Power = 0.7
+```{r}
+power.t.test(delta=5, sd=8, sig.level=0.05, power=0.7, type="two.sample", alternative = "two.sided", strict=FALSE)
+```
+
+
+
 ## GitHub Documents
 
 This is an R Markdown format used for publishing markdown documents to GitHub. When you click the **Knit** button all R code chunks are run and a markdown file (.md) suitable for publishing to GitHub is generated.
