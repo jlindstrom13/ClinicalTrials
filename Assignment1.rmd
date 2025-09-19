@@ -21,7 +21,7 @@ dim(data)
 ```{r}
 qnorm(0.70)
 ```
-
+## Question 2:
 # Power = 0.9
 ```{r}
 power.t.test(delta=5, sd=8, sig.level=0.05, power=0.9, type="two.sample", alternative = "two.sided", strict=FALSE)
@@ -35,12 +35,65 @@ power.t.test(delta=5, sd=8, sig.level=0.05, power=0.8, type="two.sample", altern
 power.t.test(delta=5, sd=8, sig.level=0.05, power=0.7, type="two.sample", alternative = "two.sided", strict=FALSE)
 ```
 
+# Question 3:
+##In R, compute the unadjusted estimator, , for the average treatment effect𝑌1 − 𝑌0
+##using the data. Then construct its 95% confidence interval. Write down the R
+##code and results. What is your conclusion?
+
+```{r}
+treat_mean<-mean(data$CDRSR_week12[data$treatment == 1])
+none_mean<-mean(data$CDRSR_week12[data$treatment == 0])
+
+diff<-none_mean - treat_mean
+print(diff)
+```
+
+# Check this
+```{r}
+t_test <- t.test(CDRSR_week12 ~ treatment, data = data, var.equal = TRUE) 
+t_test$estimate   
+t_test$conf.int
+```
+
+# 4 
+## ANCOVA model to compute the adjusted estimator for the average treatment effect
+
+```{r}
+ancova_model<-lm(CDRSR_week12 ~ treatment + CDRSR_baseline, data = data)
+summary(ancova_model)
+```
 
 
-## GitHub Documents
+```{r}
+coef(ancova_model)["treatment"]
+confint(ancova_model, "treatment", level = 0.95)
+```
 
-This is an R Markdown format used for publishing markdown documents to GitHub. When you click the **Knit** button all R code chunks are run and a markdown file (.md) suitable for publishing to GitHub is generated.
+# 5
+## Binary outcome Equation
 
-## Including Code
+# CHECK
+```{r}
+data$reduced <- ifelse(data$CDRSR_baseline - data$CDRSR_week12 >= 5, 1, 0)
+head(data)
+```
 
-You can include R code in the document as follows:
+```{r}
+treat_mean_b<-mean(data$reduced[data$treatment == 1])
+none_mean_b<-mean(data$reduced[data$treatment == 0])
+
+diff_b<- none_mean_b-treat_mean_b
+
+print(diff_b)
+```
+```{r}
+t_test <- t.test(reduced ~ treatment, data = data, var.equal = TRUE) 
+t_test$estimate   #means for each group, need to subtract
+t_test$conf.int
+```
+
+# 6 
+```{r}
+ratio<-treat_mean_b/none_mean_b
+print(ratio)
+```
