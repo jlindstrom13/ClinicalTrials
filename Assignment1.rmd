@@ -44,11 +44,24 @@ power.t.test(delta=5, sd=8, sig.level=0.05, power=0.7, type="two.sample", altern
 treat_mean<-mean(data$CDRSR_week12[data$treatment == 1])
 none_mean<-mean(data$CDRSR_week12[data$treatment == 0])
 
-diff<-none_mean - treat_mean
+diff<-treat_mean-none_mean
 print(diff)
+print(treat_mean)
+print(none_mean)
 ```
 
-# Check this
+# CI Calculation
+```{r}
+n1<-sum(data$treatment == 1)
+n0<-sum(data$treatment == 0)
+y1 <- data$CDRSR_week12[data$treatment == 1]
+y0 <- data$CDRSR_week12[data$treatment == 0]
+delta_hat<-mean(y1)-mean(y0)
+var_hat<-(var(y1)/n1)+(var(y0)/n0)
+c(delta_hat-1.96*sqrt(var_hat), delta_hat+1.96*sqrt(var_hat))
+```
+
+# Checking work
 ```{r}
 t_test <- t.test(CDRSR_week12 ~ treatment, data = data, var.equal = TRUE) 
 t_test$estimate   
@@ -62,7 +75,6 @@ t_test$conf.int
 ancova_model<-lm(CDRSR_week12 ~ treatment + CDRSR_baseline, data = data)
 summary(ancova_model)
 ```
-
 
 ```{r}
 coef(ancova_model)["treatment"]
