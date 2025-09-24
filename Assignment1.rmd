@@ -122,7 +122,7 @@ ybar1 <- mean(y1)
 ybar0 <- mean(y0)
 
 var_estimator <- ((var(y1) / (0.5 * ybar0^2)) +
-                    ((var(y0)*ybar1^2)/ (0.5 * ybar0^4))) / n
+                    ((var(y0) * ybar1^2) / (0.5 * ybar0^4))) / n
 
 
 print(var_estimator)
@@ -130,11 +130,16 @@ print(var_estimator)
 
 # Calculating estimator
 ```{r}
-ratio<-treat_mean_b/none_mean_b
+ratio <- treat_mean_b / none_mean_b
 print(ratio)
 ```
 
 # Calculating 95% CI Interval for estimator
 ```{r}
-
+delta_hat <- mean(y1) / mean(y0)
+c(delta_hat - 1.96 * sqrt(var_estimator),
+  delta_hat + 1.96 * sqrt(var_estimator))
 ```
+
+
+
